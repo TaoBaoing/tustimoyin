@@ -1,0 +1,18 @@
+﻿
+@{
+    ViewBag.Title = "Create1";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="container">
+        <div class="row">
+            <span>一级分类名字：</span>
+            <input id="Name" name="Name" type="text"/>
+            <input id="Button1" type="submit" class="btn btn-success" value="保存" />
+        </div>
+    </div>
+}
+

@@ -1,0 +1,176 @@
+﻿@using HuiYin.Models
+@{
+    ViewBag.Title = "";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section scripts
+{
+    <script src="~/Scripts/webuploader.js"></script>
+    <script src="~/Scripts/AddOrder.js"></script>
+}
+
+
+<div class="container">
+    <div class="col-md-12" style="text-align: center">
+        <img src="/Images/ShuoMing.jpg" style="width: 70%" />
+    </div>
+    <br />
+    <br />
+
+    <div id="uploader" class="wu-example">
+
+        <!--用来存放文件信息-->
+        <div id="thelist" class="uploader-list">
+
+            @foreach (ShoppingCart cart in (List<ShoppingCart>)@ViewBag.Carts)
+            {
+
+                var fcartid = "f" + cart.Id;
+                <div id="@fcartid" class="maindiv" cartid="@cart.Id" fileid="@cart.Id">
+                    <br />
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="fname">
+                                @cart.Name
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            份数<input id="number_@fcartid" onblur="CountChange(@fcartid)" value="@cart.Count" type="text" style="width: 50px;" />
+                        </div>
+                        <div class="col-md-3">
+                            文件共<span class="totalye">@cart.TotalPage</span>页
+                        </div>
+                        <div class="col-md-1">
+                            <img id="delimg_@fcartid" onmouseover="DelImgOnMouseOver(@fcartid)" onmouseout="DelImgOnMouseOut(@fcartid)" onclick="DelImgOnClick(@fcartid)" src="/Images/delmouseout.jpg" />
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div>
+                                <span>
+                                    <select id="ddldanshuang_@fcartid" onchange="DanShuangChange(this, @fcartid)">
+                                        @if (cart.IsDanMian)
+                                        {
+                                            <option selected="selected" value="设置单面">设置单面</option>
+                                            <option value="设置双面">设置双面</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="设置单面">设置单面</option>
+                                            <option selected="selected" value="设置双面">设置双面</option>
+                                        }
+
+                                    </select>
+                                </span>
+                                <span>
+                                    <select id="ddlheibai_@fcartid" onchange="HeiBaiChange(this, @fcartid)">
+                                        @if (cart.IsCaiDa)
+                                        {
+                                            <option value="黑白打">黑白打</option>
+                                            <option selected="selected" value="彩色打">彩色打</option>
+                                        }
+                                        else
+                                        {
+                                            <option selected="selected" value="黑白打">黑白打</option>
+                                            <option value="彩色打">彩色打</option>
+                                        }
+
+                                    </select>
+                                </span>
+                                <span>
+                                    <select id="ddlsize_@fcartid" onchange="PrintSizeChange(this, @fcartid)">
+                                        @if (cart.PrintSize == PrintSize.A4)
+                                        {
+                                            <option selected="selected" value="A4">A4</option>
+                                            <option value="A3"> A3</option>
+                                            <option value="A2">A2</option>
+                                            <option value="A1">A1</option>
+                                        }
+                                        else if (cart.PrintSize == PrintSize.A3)
+                                        {
+                                            <option value="A4">A4</option>
+                                            <option selected="selected" value="A3"> A3</option>
+                                            <option value="A2">A2</option>
+                                            <option value="A1">A1</option>
+                                        }
+                                        else if (cart.PrintSize == PrintSize.A2)
+                                        {
+                                            <option value="A4">A4</option>
+                                            <option value="A3"> A3</option>
+                                            <option selected="selected" value="A2">A2</option>
+                                            <option value="A1">A1</option>
+                                        }
+                                        else if (cart.PrintSize == PrintSize.A1)
+                                        {
+                                            <option value="A4">A4</option>
+                                            <option value="A3"> A3</option>
+                                            <option value="A2">A2</option>
+                                            <option selected="selected" value="A1">A1</option>
+                                        }
+
+                                    </select>
+                                </span>
+                                <span>
+                                    <select id="ddlbaozhuang_@fcartid" onchange="BaoZhuangChange(this, @fcartid)">
+                                        @if (cart.BaoZhuang == BaoZhuang.无)
+                                        {
+                                            <option selected="selected" value="无">无</option>
+                                            <option value="胶装">胶装</option>
+                                            <option value="打孔装">打孔装</option>
+                                        }
+                                        else if (cart.BaoZhuang == BaoZhuang.胶装)
+                                        {
+                                            <option value="无">无</option>
+                                            <option selected="selected" value="胶装">胶装</option>
+                                            <option value="打孔装">打孔装</option>
+                                        }
+                                        else if (cart.BaoZhuang == BaoZhuang.打孔装)
+                                        {
+                                            <option value="无">无</option>
+                                            <option value="胶装">胶装</option>
+                                            <option selected="selected" value="打孔装">打孔装</option>
+                                        }
+
+                                    </select>
+                                </span>
+                                <span style="padding-left:50px;" class="state"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                        </div>
+                        <div class="col-md-1">
+                            <div class="jine">@cart.Money</div>
+                        </div>
+                    </div>
+                    <hr />
+                </div>
+            }
+        </div>
+        <div class="row">
+            <div class="col-md-2">
+                <div class="btns">
+                    <div id="picker">选择文件</div>
+                    @*<button id="ctlBtn" class="btn btn-default">开始上传</button>*@
+                </div>
+            </div>
+            <div class="col-md-8"></div>
+            <div class="col-md-2">
+                <button id="btnClearCart" class="btn btn-default" onclick="ClearCart()">清空购物车</button>
+            </div>
+        </div>
+
+    </div>
+
+    <br />
+    <div class="row" id="PayDiv">
+        <div class="col-md-8">
+            共&nbsp;<span id="TotalCount"></span>&nbsp;个文档，预估总价 <span id="TotalMoney" style="font-size: 3em;color:red">￥00.00</span>
+        </div>
+        <div class="col-md-2"></div>
+        <div class="col-md-2">
+            <input id="btnZhiFu" type="button" onclick="BtnZhiFu()" class="btn btn-success" value="立即下单" />
+        </div>
+    </div>
+</div>

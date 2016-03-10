@@ -1,0 +1,55 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>汇印后台管理</title>
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+
+</head>
+<body>
+    <div class="container">
+        <div style="margin-top: 200px;"></div>
+        @using (Html.BeginForm("AdminLogin", "LhUser", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="row">
+                <div class="col-md-5"></div>
+                <div class="col-md-1" style="text-align: right">用户名</div>
+                <div class="col-md-1">
+                    <input id="txtName" name="txtName" placeholder="输入用户名" required="required" type="text" />
+                </div>
+                <div class="col-md-5"></div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-5"></div>
+                <div class="col-md-1" style="text-align: right">密码</div>
+                <div class="col-md-1">
+                    <input id="txtPwd" name="txtPwd" placeholder="输入密码" required="required" type="password" />
+                </div>
+                <div class="col-md-5"></div>
+            </div>
+
+            <br />
+            <div class="row">
+                <div class="col-md-5"></div>
+                <div class="col-md-1"></div>
+                <div class="col-md-1">
+                    <input id="btnLogin" type="submit" class="btn btn-success" value="登录" />
+                </div>
+                <div class="col-md-5"></div>
+            </div>
+        }
+
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,25 @@
+﻿@model HuiYin.Models.WenKuFenLei
+@{
+    ViewBag.Title = "AddChild";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.Hidden("id",Model.Id)
+    @Html.Hidden("type",Model.FenLeiType)
+
+    <div class="form-horizontal">
+        <div class="form-group">
+          <span>当前分类：@Model.Name</span> <span style="padding-left: 50px">分类级别：@Model.FenLeiType</span>
+        </div>
+        <div class="form-group">
+            
+              <div class="col-md-10">
+                  添加分类名称：<input id="Name" name="Name" type="text"/>
+                  <input id="Button1" type="submit" class="btn btn-success" value="保存" />
+            </div>
+        </div>
+
+    </div>
+}

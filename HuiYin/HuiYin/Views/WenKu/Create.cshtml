@@ -1,0 +1,297 @@
+﻿@model HuiYin.Models.WenKu
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<link href="~/Content/webuploader.css" rel="stylesheet"/>
+
+@section scripts
+{
+
+    <script src="~/Scripts/webuploader.js"></script>
+    @*    <script src="~/Scripts/AddOrder.js"></script>*@
+
+    <script type="text/javascript">
+
+        function BtnClick() {
+
+            if ($("#name").html() === "") {
+                alert("请先上传文件");
+                return false;
+            }
+
+            var id = $("#WenKuFenLeiId5").val();
+            if (id == null) {
+                id = $("#WenKuFenLeiId4").val();
+            }
+            if (id == null) {
+                id = $("#WenKuFenLeiId3").val();
+            }
+            if (id == null) {
+                id = $("#WenKuFenLeiId2").val();
+            }
+            if (id == null) {
+                id = $("#WenKuFenLeiId2").val();
+            }
+            if (id == null) {
+                alert("分类不能为空");
+                return false;
+            }
+            $("#WenKuFenLeiId").val(id);
+        }
+
+
+        var applicationPath = window.applicationPath === "" ? "" : window.applicationPath || "../../";
+        $(function() {
+            $("#WenKuFenLeiId1").click(function() {
+                // var name1 = $("#WenKuFenLeiId1").find("option:selected").text();
+                var id1 = $("#WenKuFenLeiId1").val();
+                if (id1 == null) {
+                    return;
+                }
+                $.ajax({
+                    type: "GET",
+                    data: {},
+                    url: '/WenKuFenLei/GetChilds?id=' + id1 + '&type=2',
+                    async: false,
+                    cache: false,
+                    dataType: "json",
+                    success: function(list) {
+
+                        $("#WenKuFenLeiId2").empty();
+                        $("#WenKuFenLeiId3").empty();
+                        $("#WenKuFenLeiId4").empty();
+                        $("#WenKuFenLeiId5").empty();
+
+                        var items = "";
+                        $.each(list, function(i, fenlei) {
+                            items += "<option value=\"" + fenlei.Id + "\">" + fenlei.Name + "</option>";
+                        });
+                        $("#WenKuFenLeiId2").append(items);
+                    },
+                    error: function(rrr, textStatus, errorThrown) {
+                        alert(rrr.responseText);
+                    }
+                });
+            });
+            $("#WenKuFenLeiId2").click(function() {
+                // var name1 = $("#WenKuFenLeiId1").find("option:selected").text();
+                var id2 = $("#WenKuFenLeiId2").val();
+                if (id2 == null) {
+                    return;
+                }
+                $.ajax({
+                    type: "GET",
+                    data: {},
+                    url: '/WenKuFenLei/GetChilds?id=' + id2 + '&type=3',
+                    async: false,
+                    cache: false,
+                    dataType: "json",
+                    success: function(list) {
+
+                        $("#WenKuFenLeiId3").empty();
+                        $("#WenKuFenLeiId4").empty();
+                        $("#WenKuFenLeiId5").empty();
+                        var items = "";
+                        $.each(list, function(i, fenlei) {
+                            items += "<option value=\"" + fenlei.Id + "\">" + fenlei.Name + "</option>";
+                        });
+                        $("#WenKuFenLeiId3").append(items);
+                    },
+                    error: function(rrr, textStatus, errorThrown) {
+                        alert(rrr.responseText);
+                    }
+
+                });
+
+            });
+
+            $("#WenKuFenLeiId3").click(function() {
+                // var name1 = $("#WenKuFenLeiId1").find("option:selected").text();
+                var id3 = $("#WenKuFenLeiId3").val();
+                if (id3 == null) {
+                    return;
+                }
+                $.ajax({
+                    type: "GET",
+                    data: {},
+                    url: '/WenKuFenLei/GetChilds?id=' + id3 + '&type=4',
+                    async: false,
+                    cache: false,
+                    dataType: "json",
+                    success: function(list) {
+
+                        $("#WenKuFenLeiId4").empty();
+                        $("#WenKuFenLeiId5").empty();
+                        var items = "";
+                        $.each(list, function(i, fenlei) {
+                            items += "<option value=\"" + fenlei.Id + "\">" + fenlei.Name + "</option>";
+                        });
+                        $("#WenKuFenLeiId4").append(items);
+                    },
+                    error: function(rrr, textStatus, errorThrown) {
+                        alert(rrr.responseText);
+                    }
+
+                });
+
+            });
+
+            $("#WenKuFenLeiId4").click(function() {
+                // var name1 = $("#WenKuFenLeiId1").find("option:selected").text();
+                var id4 = $("#WenKuFenLeiId4").val();
+                if (id4 == null) {
+                    return;
+                }
+
+                $.ajax({
+                    type: "GET",
+                    data: {},
+                    url: '/WenKuFenLei/GetChilds?id=' + id4 + '&type=5',
+                    async: false,
+                    cache: false,
+                    dataType: "json",
+                    success: function(list) {
+
+                        $("#WenKuFenLeiId5").empty();
+                        var items = "";
+                        $.each(list, function(i, fenlei) {
+                            items += "<option value=\"" + fenlei.Id + "\">" + fenlei.Name + "</option>";
+                        });
+                        $("#WenKuFenLeiId5").append(items);
+                    },
+                    error: function(rrr, textStatus, errorThrown) {
+                        alert(rrr.responseText);
+                    }
+
+                });
+
+            });
+
+
+            var uploader = WebUploader.create({
+
+                //自动上传
+                auto: true,
+
+                // swf文件路径
+                swf: applicationPath + '/Script/Uploader.swf',
+
+                // 文件接收服务端。
+                server: '/Upload/Upload',
+
+                // 选择文件的按钮。可选。
+                // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+                pick: '#picker',
+
+                // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
+                resize: false
+            });
+
+            uploader.on('uploadSuccess', function(file, response) {
+                //$('#' + file.id).find('p.state').text('已上传');
+                $("#FileName").val(response.FileName);
+                $("#Name").val(response.Name);
+                $("#filename").html(response.FileName);
+                $("#name").html(response.Name);
+            });
+
+        });
+
+
+    </script>
+
+
+
+}
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+@Html.HiddenFor(x=>x.WenKuFenLeiId)
+@Html.HiddenFor(x=>x.FileName)
+@Html.HiddenFor(x=>x.Name)
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+        <div class="form-group">
+            <label class="control-label col-md-2">一级分类</label>
+            <div class="col-md-10">
+                @Html.DropDownList("WenKuFenLeiId1", null, htmlAttributes: new { @class = "form-control" })
+
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">二级分类</label>
+            <div class="col-md-10">
+                @Html.DropDownList("WenKuFenLeiId2", null, htmlAttributes: new { @class = "form-control" })
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">三级分类</label>
+            <div class="col-md-10">
+                @Html.DropDownList("WenKuFenLeiId3", null, htmlAttributes: new { @class = "form-control" })
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">四级分类</label>
+            <div class="col-md-10">
+                @Html.DropDownList("WenKuFenLeiId4", null, htmlAttributes: new { @class = "form-control" })
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">五级分类</label>
+            <div class="col-md-10">
+                @Html.DropDownList("WenKuFenLeiId5", null, htmlAttributes: new { @class = "form-control" })
+
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <span id="name"></span>
+                <div id="uploader" class="wu-example">
+                    <!--用来存放文件信息-->
+                    <div id="thelist" class="uploader-list"></div>
+                    <div class="btns">
+                        <div id="picker">选择文件</div>
+@*                        <button id="ctlBtn" class="btn btn-default">开始上传</button>*@
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.FileName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+               <span id="filename"></span>
+            </div>
+        </div>
+
+
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="保存" onclick="BtnClick()" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("返回列表", "Index")
+</div>

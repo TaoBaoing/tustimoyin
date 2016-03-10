@@ -1,0 +1,130 @@
+﻿@using HuiYin.Models
+@model IEnumerable<HuiYin.Models.Order>
+
+@{
+    ViewBag.Title = "订单中心";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<script type="text/javascript">
+
+    function Search() {
+        var xingming = $("#txtXingMing").val();
+        var start = $("#txtStart").val();
+        var end = $("#txtEnd").val();
+        var status = $("#SelStatus").children('option:selected').val();
+        var pageindex=@ViewBag.PageIndex;
+        window.location.href = "/Order/AllOrder?XingMing="+xingming+"&Start="+start+"&End="+end+"&Status="+status+"&PageIndex="+pageindex;
+    }
+
+//    $(function() {
+//
+//        $("#txtStart").kendoCalendar({
+//            value:new Date()
+//        });
+//
+//        $("#txtXingMing").val(@ViewBag.XingMing);
+//       // $("#txtStart").val(@ViewBag.Start);
+//        $("#txtEnd").val(@ViewBag.End);
+//
+//        $("#SelStatus").val(@ViewBag.Status);
+//        $("#SelStatus").find("option[text='@ViewBag.StatusName']").attr("selected", true);
+//
+//    });
+
+
+</script>
+
+
+<div style="margin-top: 50px"></div>
+
+<div class="row">
+    <div class="col-md-2">客户：<input id="txtXingMing" style="width: 120px" type="text" /></div>
+    <div class="col-md-2">开始：<input class="datepicker" style="width: 120px" id="txtStart" type="text" /></div>
+    <div class="col-md-2">结束：<input class="datepicker" id="txtEnd" style="width: 120px" type="text" /></div>
+    <div class="col-md-2">状态：<select id="SelStatus">
+            <option value="0">全部</option>
+            <option value="10">未打印</option>
+            <option value="20">已打印</option>
+        </select>
+    </div>
+    <div class="col-md-2"><input id="btnSearch" type="button" onclick="Search()" value="查询" class="btn btn-success" /></div>
+</div>
+
+<div style="margin-top: 20px;"></div>
+<script type="text/javascript">
+    function SetPrint(s) {
+        var orderid = $(s).attr("orderid");
+        $.ajax({
+            url: '/Order/SetPrintStatus?orderid='+orderid+'&orderstatus=20',
+            sync: true,
+            cache: false,
+            dataType: "json",
+            success: function (data) {
+                location.reload();
+            },
+            error: function (rrr, textStatus, errorThrown) {
+                alert(rrr.responseText);
+            }
+        });
+    }
+</script>
+@foreach (var item in Model)
+{
+    <div class="container">
+        <div class="row" style="background-color: #EAF8FF;height: 40px;line-height: 40px">
+            <div class="col-md-6">
+                客户:@item.LhUser.XingMing <span style="padding-left: 20px;"> 手机：@item.LhUser.Name</span>   <span style="padding-left: 20px;"> @item.CreateTime.ToLongDateString()</span>  <span style="padding-left: 20px;">订单号：@item.Id</span>
+            </div>
+            <div class="col-md-2">订单金额：<span style="color: red; ">@item.Money</span></div>
+            <div class="col-md-2">订单状态：@item.OrderStatus</div>
+            <div class="col-md-2">
+                @if (item.OrderStatus == OrderStatus.未打印)
+                {
+                    <input orderid="@item.Id" id="btnSetPrint" onclick="SetPrint(this)" type="button" class="btn btn-success" style="line-height: 20px;" value="设置已打印" />
+                }
+               
+            </div>
+        </div>
+        @foreach (var detail in item.OrderDetails)
+        {
+            <div class="row">
+                <div class="col-md-6">
+                    <a href="/Upload/@detail.UploadFile.FilePathName">@detail.UploadFile.FileName</a>
+                </div>
+                <div class="col-md-2">@detail.TotalPage&nbsp;页</div>
+                <div class="col-md-2">@detail.Count</div>
+                <div class="col-md-2">@detail.Money</div>
+            </div>
+        }
+        <br />
+    </div>
+}
+
+<nav>
+    <ul class="pagination">
+
+        <li>
+            <a href="@Url.Action("AllOrder", "Order", new RouteValueDictionary(new { XingMing = ViewBag.XingMing, Start = ViewBag.Start, End = ViewBag.End, Status = ViewBag.Status, PageIndex = 1 }))" aria-label="Previous">
+                <span aria-hidden="true">首页</span>
+            </a>
+        </li>
+
+        @for (int i = 1; i <= ViewBag.TotalPages; i++)
+        {
+            if (ViewBag.PageIndex == i)
+            {
+                <li class="active"><a href="@Url.Action("AllOrder", "Order", new RouteValueDictionary(new { XingMing = ViewBag.XingMing, Start = ViewBag.Start, End = ViewBag.End, Status = ViewBag.Status, PageIndex = i }))">@Html.Raw(i)</a></li>
+            }
+            else
+            {
+                <li><a href="@Url.Action("AllOrder", "Order", new RouteValueDictionary(new { XingMing = ViewBag.XingMing, Start = ViewBag.Start, End = ViewBag.End, Status = ViewBag.Status, PageIndex = i }))">@Html.Raw(i)</a></li>
+            }
+        }
+        <li>
+            <a href="@Url.Action("AllOrder", "Order", new RouteValueDictionary(new { XingMing = ViewBag.XingMing, Start = ViewBag.Start, End = ViewBag.End, Status = ViewBag.Status, PageIndex = ViewBag.TotalPages }))" aria-label="Next">
+                <span aria-hidden="true">末页</span>
+            </a>
+        </li>
+        
+    </ul>
+</nav>
