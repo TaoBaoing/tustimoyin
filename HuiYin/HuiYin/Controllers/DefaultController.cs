@@ -16,5 +16,10 @@ namespace HuiYin.Controllers
             return RedirectToAction("AddOrder", "Order");
             return View();
         }
+
+        public ActionResult Admin()
+        {
+            return View();
+        }
     }
 }

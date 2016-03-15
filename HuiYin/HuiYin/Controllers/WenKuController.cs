@@ -14,12 +14,23 @@ namespace HuiYin.Controllers
     {
         private AppDbContext db = new AppDbContext();
 
+        public ActionResult Default(string key)
+        {
+            ViewBag.WenKuFenLeis = db.WenKuFenLeis.ToList();
+
+            var WenKus = db.WenKus.ToList();
+            if (!string.IsNullOrEmpty(key))
+            {
+                WenKus = WenKus.Where(x => x.Name.Contains(key)).ToList();
+            }
+            ViewBag.WenKus = WenKus;
+            return View();
+        }
+
         // GET: WenKu
         public ActionResult Index(RequestModel request)
         {
             var wenKus = db.WenKus.Include(w => w.WenKuFenLei);
-
-
             return View(wenKus.ToList());
         }
 

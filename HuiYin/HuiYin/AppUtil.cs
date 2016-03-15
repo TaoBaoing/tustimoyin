@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using System.Reflection;
 using System.Web.Mvc;
 using Microsoft.Office.Interop.Word;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
+using MSWord = Microsoft.Office.Interop.Word;
 namespace HuiYin
 {
     public class AppUtil
@@ -22,8 +24,7 @@ namespace HuiYin
         }
 
 
-        private Microsoft.Office.Interop.Word.Application myWordApp = new Microsoft.Office.Interop.Word.ApplicationClass();
-        object oMissing = System.Reflection.Missing.Value;
+
 
         #region --获取pdf文件的页数--
         public int GetPDFPageCountByDll(string path)
@@ -118,6 +119,11 @@ namespace HuiYin
         }
         #endregion
 
+
+        private MSWord.Application wordApp;  //Word应用程序变量
+        private MSWord.Document wordDoc;     //Word文档变量
+        private Object Nothing = Missing.Value;
+
         #region --获取word文件的页数--
         /// <summary>
         /// 获得word文档页数
@@ -126,8 +132,32 @@ namespace HuiYin
         /// <returns></returns>
         public int GetWordPageCount(string path)
         {
+            int p = 0;
+//            Selection ss=new Selection();
+            //            FileInfo info=new FileInfo(path);
+            //            var ss = info.Attributes;
+
+            wordApp = new MSWord.ApplicationClass();
+            wordDoc = wordApp.Documents.Add(ref Nothing, ref Nothing, ref Nothing, ref Nothing);
+            //打开Word
+object FileName = path;
+            object readOnly = false;
+            object isVisible = true;
+            wordDoc = wordApp.Documents.Open(ref FileName, ref Nothing, ref readOnly,
+            ref Nothing, ref Nothing, ref Nothing, ref Nothing, ref Nothing,
+            ref Nothing, ref Nothing, ref Nothing, ref isVisible, ref Nothing,
+            ref Nothing, ref Nothing, ref Nothing);
+
+            // 计算Word文档页数
+            MSWord.WdStatistic stat = MSWord.WdStatistic.wdStatisticPages;
+            int num = wordDoc.ComputeStatistics(stat, ref Nothing);
+
+
             try
             {
+                Microsoft.Office.Interop.Word.Application myWordApp = new Microsoft.Office.Interop.Word.ApplicationClass();
+                object oMissing = System.Reflection.Missing.Value;
+
                 myWordApp.Visible = false;
                 object filePath = path; //这里是Word文件的路径
                 //打开文件
@@ -137,27 +167,26 @@ namespace HuiYin
                     ref oMissing, ref oMissing, ref oMissing, ref oMissing,
                     ref oMissing, ref oMissing, ref oMissing, ref oMissing);
                 //下面是取得打开文件的页数
-                int pages = myWordDoc.ComputeStatistics(WdStatistic.wdStatisticPages, ref  oMissing);
+                int pages = myWordDoc.ComputeStatistics(WdStatistic.wdStatisticPages, ref oMissing);
                 myWordDoc.Close(ref oMissing, ref oMissing, ref oMissing);
-                return pages;
+
+                if (myWordApp != null)
+                {
+                    //关闭文件
+                    ((Microsoft.Office.Interop.Word.Application)myWordApp).Quit(ref oMissing, ref oMissing, ref oMissing);
+                }
+
+                p = pages;
             }
             catch (Exception ex)
             {
-                return 0;
+
             }
+            
+            return p;
         }
-        /// <summary>
-        /// 关闭Word.ApplicationClass对象
-        /// </summary>
-        public void QuitWordApp()
-        {
-            if (myWordApp != null)
-            {
-                //关闭文件
-                ((Microsoft.Office.Interop.Word.Application)myWordApp).Quit(ref oMissing, ref oMissing, ref oMissing);
-            }
-        }
+
         #endregion 
     }
-    
+
 }

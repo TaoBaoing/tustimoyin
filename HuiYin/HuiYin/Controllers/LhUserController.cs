@@ -51,7 +51,6 @@ namespace HuiYin.Controllers
             db.LhUsers.Attach(u);
             u.XingMing = user.XingMing;
             u.Address = user.Address;
-            u.Sex = user.Sex;
             u.Email = user.Email;
             u.UserType = UserType.Customer;
             db.SaveChanges();

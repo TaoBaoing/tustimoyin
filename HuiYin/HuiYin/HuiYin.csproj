@@ -391,6 +391,8 @@
     <Content Include="Views\WenKu\Details.cshtml" />
     <Content Include="Views\WenKu\Edit.cshtml" />
     <Content Include="Views\WenKu\Index.cshtml" />
+    <Content Include="Views\Default\Admin.cshtml" />
+    <Content Include="Views\WenKu\Default.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201509241340174_sfd32.resx">

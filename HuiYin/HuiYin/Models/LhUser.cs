@@ -49,8 +49,8 @@ namespace HuiYin.Models
             get { return _address; }
             set { _address = value; } }
 
-        [Display(Name = "性别")]
-        public string Sex { get; set; }
+//        [Display(Name = "性别")]
+//        public string Sex { get; set; }
         
         [EmailAddress]
         [Display(Name = "邮箱")]
