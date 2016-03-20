@@ -12,7 +12,7 @@ namespace HuiYin.Controllers
     [Authorize]
     public class OrderController : Controller
     {
-        private readonly decimal A4黑白单面 = (decimal)0.07;
+        private static readonly decimal A4黑白单面 = (decimal)0.07;
         private readonly decimal A3黑白单面 = (decimal)0.3;
         private readonly decimal A2黑白单面 = (decimal)2;
         private readonly decimal A1黑白单面 = (decimal)3.5;
@@ -393,7 +393,7 @@ namespace HuiYin.Controllers
             db.UploadFiles.Add(uf);
             db.SaveChanges();
 
-            var cart = GetShoppingCart(filename, file);
+            var cart = GetShoppingCart(filename);
             cart.LhUserId = BLContext.LhUserId;
             cart.UploadFileId = uf.Id;
          
@@ -418,7 +418,7 @@ namespace HuiYin.Controllers
             return Json(obj, JsonRequestBehavior.AllowGet);
         }
 
-        private ShoppingCart GetShoppingCart(string filename, HttpPostedFileBase file)
+        public static ShoppingCart GetShoppingCart(string filename)
         {
             var cart = new ShoppingCart();
             string ex = Path.GetExtension(filename);
@@ -436,7 +436,7 @@ namespace HuiYin.Controllers
             }
 
             //设置默认值
-            cart.Name = file.FileName;
+            cart.Name = filename;
             cart.Count = 1;
             cart.IsDanMian = true;
             cart.IsCaiDa = false;

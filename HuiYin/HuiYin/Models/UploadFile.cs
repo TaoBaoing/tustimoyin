@@ -28,5 +28,11 @@ namespace HuiYin.Models
             set { _createTime = value; }
         }
 
+        public long? WenKuId { get; set; }
+ 
+        public WenKu WenKu { get; set; }
+
+
+
     }
 }

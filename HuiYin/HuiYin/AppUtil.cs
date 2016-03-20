@@ -133,11 +133,13 @@ namespace HuiYin
         public int GetWordPageCount(string path)
         {
             int p = 0;
-//            Selection ss=new Selection();
-            //            FileInfo info=new FileInfo(path);
-            //            var ss = info.Attributes;
+            try
+            {
+                //            Selection ss=new Selection();
+                //            FileInfo info=new FileInfo(path);
+                //            var ss = info.Attributes;
 
-            wordApp = new MSWord.ApplicationClass();
+                wordApp = new MSWord.ApplicationClass();
             wordDoc = wordApp.Documents.Add(ref Nothing, ref Nothing, ref Nothing, ref Nothing);
             //打开Word
 object FileName = path;
@@ -153,8 +155,7 @@ object FileName = path;
             int num = wordDoc.ComputeStatistics(stat, ref Nothing);
 
 
-            try
-            {
+           
                 Microsoft.Office.Interop.Word.Application myWordApp = new Microsoft.Office.Interop.Word.ApplicationClass();
                 object oMissing = System.Reflection.Missing.Value;
 

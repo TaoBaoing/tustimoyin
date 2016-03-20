@@ -80,14 +80,20 @@ namespace HuiYin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Login(string txtName, string txtPwd)
+        public ActionResult Login(string txtName, string txtPwd,string ReturnUrl)
         {
             if (db.LhUsers.Any(x => x.Name == txtName && x.Pwd == txtPwd))
             {
                 FormsAuthentication.SetAuthCookie(txtName, false);//验证通过
                 var returnurl = FormsAuthentication.GetRedirectUrl(txtName, false);
-
-                return Redirect(returnurl);
+                if (!string.IsNullOrEmpty(ReturnUrl))
+                {
+                    return Redirect(ReturnUrl);
+                }
+                else
+                {
+                    return Redirect(returnurl);
+                }
             }
             else
             {

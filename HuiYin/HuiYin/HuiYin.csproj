@@ -273,6 +273,10 @@
     <Compile Include="Migrations\201510180720290_addwenkutime.Designer.cs">
       <DependentUpon>201510180720290_addwenkutime.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201603201240365_add fields wenkuid.cs" />
+    <Compile Include="Migrations\201603201240365_add fields wenkuid.Designer.cs">
+      <DependentUpon>201603201240365_add fields wenkuid.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AppDbContext.cs" />
     <Compile Include="Models\LhUser.cs" />
@@ -353,6 +357,7 @@
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ApiGroup.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
     <None Include="Properties\PublishProfiles\139.196.45.107.pubxml" />
+    <None Include="Properties\PublishProfiles\tustimoyin.pubxml" />
     <None Include="Properties\PublishProfiles\本地.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -473,6 +478,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201510180720290_addwenkutime.resx">
       <DependentUpon>201510180720290_addwenkutime.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603201240365_add fields wenkuid.resx">
+      <DependentUpon>201603201240365_add fields wenkuid.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

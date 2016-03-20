@@ -34,6 +34,7 @@
     <hr/>
     @using (Html.BeginForm("Login", "LhUser", FormMethod.Post))
     {
+        @Html.Hidden("ReturnUrl", Request.QueryString["ReturnUrl"])
         @Html.AntiForgeryToken()
         <div class="row" style="margin-top: 50px;">
             <div class="col-md-6" align="right">
