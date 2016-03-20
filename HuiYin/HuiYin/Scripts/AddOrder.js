@@ -380,7 +380,7 @@ jQuery(function () {
     });
 
 
-    uploader.on('uploadError', function (file) {
+    uploader.on('uploadError', function (file, response) {
         $('#' + file.id).find('span.state').text('上传出错');
     });
 

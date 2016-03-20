@@ -372,50 +372,66 @@ namespace HuiYin.Controllers
         static string _urlPath = string.Empty;
         public ActionResult UpLoadProcess(string id, string name, string type, string lastModifiedDate, int size, HttpPostedFileBase file)
         {
-            string localPath = Path.Combine(HttpRuntime.AppDomainAppPath, "Upload");
-            if (Request.Files.Count == 0)
+            try
             {
-                return Json(new { jsonrpc = 2.0, error = new { code = 102, message = "保存失败" }, id = "id" });
+                string localPath = Path.Combine(HttpRuntime.AppDomainAppPath, "Upload");
+                if (Request.Files.Count == 0)
+                {
+                    return Json(new { jsonrpc = 2.0, error = new { code = 102, message = "保存失败" }, id = "id" });
+                }
+
+                string ex = Path.GetExtension(file.FileName);
+                var filePathName = Guid.NewGuid().ToString("N") + ex;
+                if (!Directory.Exists(localPath))
+                {
+                    Directory.CreateDirectory(localPath);
+                }
+                var filename = Path.Combine(localPath, filePathName);
+                file.SaveAs(filename);
+                var uf = new UploadFile();
+                uf.FileName = file.FileName;
+                uf.FilePathName = filePathName;
+                uf.LhUserId = BLContext.LhUserId;
+                db.UploadFiles.Add(uf);
+                db.SaveChanges();
+
+                var cart = GetShoppingCart(filename);
+                cart.LhUserId = BLContext.LhUserId;
+                cart.UploadFileId = uf.Id;
+
+                db.ShoppingCarts.Add(cart);
+                db.SaveChanges();
+
+                var obj = new
+                {
+                    jsonrpc = "2.0",
+                    id = id,
+                    fileid = uf.Id,
+                    cartid = cart.Id,
+                    fenshu = cart.Count,
+                    iscaida = cart.IsCaiDa,
+                    printsize = cart.PrintSize.ToString(),
+                    isdanmian = cart.IsDanMian,
+                    baozhuang = cart.BaoZhuang.ToString(),
+                    totalyeshu = cart.TotalPage,
+                    jine = cart.Money.ToString(CultureInfo.InvariantCulture),
+                    filePath = _urlPath + "/" + filePathName
+                };
+                return Json(obj, JsonRequestBehavior.AllowGet);
             }
-
-            string ex = Path.GetExtension(file.FileName);
-            var filePathName = Guid.NewGuid().ToString("N") + ex;
-            if (!Directory.Exists(localPath))
+            catch (Exception ee)
             {
-                Directory.CreateDirectory(localPath);
+                WriteLog(ee.ToString());
+                return Json(ee.Message, JsonRequestBehavior.AllowGet);
             }
-            var filename = Path.Combine(localPath, filePathName);
-            file.SaveAs(filename);
-            var uf = new UploadFile();
-            uf.FileName = file.FileName;
-            uf.FilePathName = filePathName;
-            uf.LhUserId = BLContext.LhUserId;
-            db.UploadFiles.Add(uf);
-            db.SaveChanges();
+        }
 
-            var cart = GetShoppingCart(filename);
-            cart.LhUserId = BLContext.LhUserId;
-            cart.UploadFileId = uf.Id;
-         
-            db.ShoppingCarts.Add(cart);
-            db.SaveChanges();
-
-            var obj = new
+        private void WriteLog(string log)
+        {
+            using (var sw=new StreamWriter("d:\\log.txt"))
             {
-                jsonrpc = "2.0",
-                id = id,
-                fileid = uf.Id,
-                cartid = cart.Id,
-                fenshu = cart.Count,
-                iscaida = cart.IsCaiDa,
-                printsize = cart.PrintSize.ToString(),
-                isdanmian = cart.IsDanMian,
-                baozhuang = cart.BaoZhuang.ToString(),
-                totalyeshu = cart.TotalPage,
-                jine = cart.Money.ToString(CultureInfo.InvariantCulture),
-                filePath = _urlPath + "/" + filePathName
-            };
-            return Json(obj, JsonRequestBehavior.AllowGet);
+                sw.WriteLine(log);
+            }
         }
 
         public static ShoppingCart GetShoppingCart(string filename)
