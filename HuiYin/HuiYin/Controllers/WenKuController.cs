@@ -17,6 +17,12 @@ namespace HuiYin.Controllers
     {
         private AppDbContext db = new AppDbContext();
 
+        public ActionResult Viewer(string viewFileName)
+        {
+            ViewBag.ViewFileName = viewFileName;
+            return View();
+        }
+
         private List<long> GetWhereList(long fId)
         {
             var newdb = new AppDbContext();

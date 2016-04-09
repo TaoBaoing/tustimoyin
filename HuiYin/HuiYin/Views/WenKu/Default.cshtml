@@ -42,7 +42,7 @@
     <div class="row">
  
         <div class="col-md-offset-3">
-            <input type="text" style="max-width: 500px !important" width="500" class="form-control" id="txtSearch" placeholder="汇印一下">
+            <input type="text" style="display:inline; max-width: 400px !important" width="400" class="form-control" id="txtSearch" placeholder="汇印一下">
             <input type="button" class="btn btn-default"  onclick="SearchClick()" id="btnSearch" value="搜索">
         </div>
 
@@ -59,7 +59,7 @@
                 @foreach (WenKuFenLei fenLei in ((List<WenKuFenLei>)ViewBag.WenKuFenLeis1))
                 {
                     <div class="panel-body">
-                        <b><a href="/WenKu/Default?fId=@fenLei.Id">@fenLei.Name</a> </b>
+                        <b><a href="/WenKu/Default?fId=@fenLei.Id" >@fenLei.Name</a> </b>
 
                         @foreach (WenKuFenLei fenLei2 in ((List<WenKuFenLei>
                     )ViewBag.WenKuFenLeis2).Where(x => x.ParentId == fenLei.Id))
@@ -79,7 +79,7 @@
             @foreach (WenKu wenku in ((List<WenKu>)ViewBag.WenKus))
             {
                 <li class="list-group-item">
-                    <span><a href="/Upload/WenKu/@wenku.FileName">@wenku.Name</a></span>  <span style="float: right"><button class="" id="@wenku.Id" onclick="addtoshopclick(@wenku.Id)">添加购物车</button></span>
+                    <span><a href="/Upload/WenKu/@wenku.FileName" target="_blank">@wenku.Name</a></span>  <span style="float: right"><button class="" id="@wenku.Id" onclick="addtoshopclick(@wenku.Id)">添加购物车</button></span>
                   
                 </li>
             }
