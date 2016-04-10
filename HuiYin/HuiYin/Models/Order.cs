@@ -40,8 +40,9 @@ namespace HuiYin.Models
 
     public enum OrderStatus
     {
-        全部=0,
         未打印 = 10,
-        已打印 = 20
+        已打印 = 20,
+        配送中 = 30,
+        已完成 = 40
     }
 }

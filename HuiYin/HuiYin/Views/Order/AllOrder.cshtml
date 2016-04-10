@@ -45,6 +45,8 @@
             <option value="0">全部</option>
             <option value="10">未打印</option>
             <option value="20">已打印</option>
+            <option value="30">配送中</option>
+            <option value="40">已完成</option>
         </select>
     </div>
     <div class="col-md-2"><input id="btnSearch" type="button" onclick="Search()" value="查询" class="btn btn-success" /></div>
@@ -54,8 +56,10 @@
 <script type="text/javascript">
     function SetPrint(s) {
         var orderid = $(s).attr("orderid");
+        var statuevalue = $("#ddlstatus_" + orderid).val();
+        
         $.ajax({
-            url: '/Order/SetPrintStatus?orderid='+orderid+'&orderstatus=20',
+            url: '/Order/SetPrintStatus?orderid='+orderid+'&orderstatus='+statuevalue,
             sync: true,
             cache: false,
             dataType: "json",
@@ -76,13 +80,11 @@
                 客户:@item.LhUser.XingMing <span style="padding-left: 20px;"> 手机：@item.LhUser.Name</span>   <span style="padding-left: 20px;"> @item.CreateTime.ToLongDateString()</span>  <span style="padding-left: 20px;">订单号：@item.Id</span>
             </div>
             <div class="col-md-2">订单金额：<span style="color: red; ">@item.Money</span></div>
-            <div class="col-md-2">订单状态：@item.OrderStatus</div>
+            <div class="col-md-2">订单状态：@Html.EnumDropDownListFor(x=>x.FirstOrDefault(y=>y.Id==item.Id).OrderStatus, new  {id="ddlstatus_"+@item.Id}) </div>
             <div class="col-md-2">
-                @if (item.OrderStatus == OrderStatus.未打印)
-                {
-                    <input orderid="@item.Id" id="btnSetPrint" onclick="SetPrint(this)" type="button" class="btn btn-success" style="line-height: 20px;" value="设置已打印" />
-                }
-               
+
+                <input orderid="@item.Id" id="btnSetPrint" onclick="SetPrint(this)" type="button" class="btn btn-success" style="line-height: 20px;" value="确定"/>
+
             </div>
         </div>
         @foreach (var detail in item.OrderDetails)
@@ -96,6 +98,11 @@
                 <div class="col-md-2">@detail.Money</div>
             </div>
         }
+        <div class="row">
+            <div class="col-md-12" style="font-size: 10px; margin-top: 5px;color: red">
+                配送地址：@item.LhUser.Address
+            </div>
+        </div>
         <br />
     </div>
 }

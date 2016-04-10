@@ -29,14 +29,14 @@ namespace HuiYin.Controllers
         private AppDbContext db = new AppDbContext();
 
 
-        public ActionResult SetPrintStatus(long orderid,int orderstatus)
+        public ActionResult SetPrintStatus(long orderid, OrderStatus orderstatus)
         {
 //            全部=0,
 //        未打印 = 10,
 //        已打印 = 20
             var order = db.Orders.Find(orderid);
             db.Orders.Attach(order);
-            order.OrderStatus=OrderStatus.已打印;
+            order.OrderStatus= orderstatus;
             db.SaveChanges();
             return Json("ok", JsonRequestBehavior.AllowGet);
         }
@@ -85,9 +85,15 @@ namespace HuiYin.Controllers
                 {
                     list = list.Where(x => x.OrderStatus == OrderStatus.已打印).ToList();
                 }
+                else if (Status == 30)
+                {
+                    list = list.Where(x => x.OrderStatus == OrderStatus.配送中).ToList();
+                }
+                else if (Status == 40)
+                {
+                    list = list.Where(x => x.OrderStatus == OrderStatus.已完成).ToList();
+                }
             }
-
-
             if (PageIndex < 1)
             {
                 PageIndex = 1;
