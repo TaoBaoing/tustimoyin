@@ -27,6 +27,10 @@ namespace HuiYin.Models
         [Display(Name = "文档名称")]
         public string Name { get; set; }
 
+
+        [Display(Name = "文档名称")]
+        public string DisplayName { get; set; }
+
         [Display(Name = "份数")]
         public int Count { get; set; }
 

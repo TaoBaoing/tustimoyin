@@ -264,8 +264,8 @@ jQuery(function () {
         server: applicationPath + 'Order/UpLoadProcess',
 
         //文件大小限制
-        fileSizeLimit: 10 * 1024 * 1024,    // 200 M
-        fileSingleSizeLimit: 5 * 1024 * 1024,    // 50 M
+        fileSizeLimit: 1000 * 1024 * 1024,    // 
+        fileSingleSizeLimit: 1000 * 1024 * 1024,    // 
 
         // 选择文件的按钮。可选。
         // 内部根据当前运行是创建，可能是input元素，也可能是flash.

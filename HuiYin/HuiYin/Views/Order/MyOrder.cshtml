@@ -6,7 +6,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="col-md-12" style="margin-top: 50px; color: red;font-size: 1.2em">待打印订单：</div>
+<div class="row" style="margin-top: 50px; color: red;font-size: 1.2em">待打印订单：</div>
 <hr/>
 @foreach (var item in Model.Where(x=>x.OrderStatus==OrderStatus.未打印))
 {
@@ -35,7 +35,7 @@
 
 <br/>
 <br/>
-<div class="col-md-12" style="color: red;font-size: 1.2em">已打印订单：</div>
+<div class="row" style="color: red;font-size: 1.2em">已打印订单：</div>
 <hr />
 @foreach (var item in Model.Where(x => x.OrderStatus == OrderStatus.已打印))
 {
@@ -65,7 +65,7 @@
 
 <br />
 <br />
-<div class="col-md-12" style="color: red;font-size: 1.2em">配送中订单：</div>
+<div class="row" style="color: red;font-size: 1.2em">配送中订单：</div>
 <hr />
 @foreach (var item in Model.Where(x => x.OrderStatus == OrderStatus.配送中))
 {
@@ -95,7 +95,7 @@
 
 <br />
 <br />
-<div class="col-md-12" style="color: #008AFF;font-size: 1.2em">已完成：</div>
+<div class="row" style="color: red;font-size: 1.2em">已完成：</div>
 <hr />
 @foreach (var item in Model.Where(x => x.OrderStatus == OrderStatus.已完成))
 {

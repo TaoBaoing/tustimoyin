@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.Entity;
 using System.Data.SqlClient;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Runtime.InteropServices.ComTypes;
@@ -16,6 +17,16 @@ namespace HuiYin.Controllers
     public class WenKuController : Controller
     {
         private AppDbContext db = new AppDbContext();
+
+
+        public ActionResult DownLoad(long Id)
+        {
+            var wenku = db.WenKus.FirstOrDefault(x => x.Id == Id);
+            var contentType = AppUtil.MimeType(wenku.FileName);
+            string localPath = Path.Combine(HttpRuntime.AppDomainAppPath, "Upload\\WenKu");
+            var filename = Path.Combine(localPath, wenku.FileName);
+            return File(filename, contentType, wenku.Name);
+        }
 
         public ActionResult Viewer(string viewFileName)
         {
@@ -83,7 +94,9 @@ namespace HuiYin.Controllers
             }
             //var wenku = db.WenKus.Find(wenkuId);
             var uf = db.UploadFiles.FirstOrDefault(x => x.WenKuId == wenkuId);
-            var cart =OrderController.GetShoppingCart(uf.FileName);
+            string localPath = Path.Combine(HttpRuntime.AppDomainAppPath, "Upload\\WenKu");
+            var filename = Path.Combine(localPath, uf.FilePathName);
+            var cart =OrderController.GetShoppingCart(filename, uf.FileName);
             cart.LhUserId = BLContext.LhUserId;
             cart.UploadFileId = uf.Id;
 

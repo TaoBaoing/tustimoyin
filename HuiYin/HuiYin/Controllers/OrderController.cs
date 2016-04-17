@@ -401,7 +401,7 @@ namespace HuiYin.Controllers
                 db.UploadFiles.Add(uf);
                 db.SaveChanges();
 
-                var cart = GetShoppingCart(filename);
+                var cart = GetShoppingCart(filename, file.FileName);
                 cart.LhUserId = BLContext.LhUserId;
                 cart.UploadFileId = uf.Id;
 
@@ -440,14 +440,14 @@ namespace HuiYin.Controllers
             }
         }
 
-        public static ShoppingCart GetShoppingCart(string filename)
+        public static ShoppingCart GetShoppingCart(string filename,string displayName)
         {
             var cart = new ShoppingCart();
             string ex = Path.GetExtension(filename);
             if (ex.Contains("doc"))
             {
                 var util = new AppUtil();
-                var total = util.GetWordPageCount(filename);
+                var total = util.GetWordPageCount2(filename);
                 cart.TotalPage = total;
             }
             else if (ex.Contains("pdf"))
@@ -459,6 +459,7 @@ namespace HuiYin.Controllers
 
             //设置默认值
             cart.Name = filename;
+            cart.DisplayName = displayName;
             cart.Count = 1;
             cart.IsDanMian = true;
             cart.IsCaiDa = false;
