@@ -28,6 +28,14 @@ namespace HuiYin.Controllers
 
         private AppDbContext db = new AppDbContext();
 
+   
+        public ActionResult CancleOrder(long Id)
+        {
+            var order = db.Orders.Find(Id);
+            db.Orders.Remove(order);
+            db.SaveChanges();
+            return Json("ok", JsonRequestBehavior.AllowGet);
+        }
 
         public ActionResult SetPrintStatus(long orderid, OrderStatus orderstatus)
         {

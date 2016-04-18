@@ -6,17 +6,40 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@section  scripts{
+    <script type="text/javascript">
+        function CancleOrder(orderId) {
+            if (confirm('确定取消？')) {
+                $.ajax({
+                    url: '/Order/CancleOrder/' + orderId ,
+                    sync: true,
+                    cache: false,
+                    dataType: "json",
+                    success: function (data) {
+                        location.reload();
+                    },
+                    error: function (rrr, textStatus, errorThrown) {
+                        alert(rrr.responseText);
+                    }
+                });
+            }
+        }
+    </script>
+  
+}
+
 <div class="row" style="margin-top: 50px; color: red;font-size: 1.2em">待打印订单：</div>
 <hr/>
 @foreach (var item in Model.Where(x=>x.OrderStatus==OrderStatus.未打印))
 {
     <div class="container">
         <div class="row" style="background-color: #EAF8FF;height: 40px;line-height: 40px">
-            <div class="col-md-8">
+            <div class="col-md-7">
                 @item.CreateTime.ToLongDateString()<span style="padding-left: 20px;">订单号：@item.Id</span>
             </div>
             <div class="col-md-2">订单金额：<span style="color: red; ">@item.Money</span></div>
             <div class="col-md-2">订单状态：@item.OrderStatus</div>
+            <div class="col-md-1"><input type="button" value="取消订单" onclick="CancleOrder(@item.Id)" class="btn btn-info"/></div>
         </div>
         @foreach (var detail in item.OrderDetails)
         {

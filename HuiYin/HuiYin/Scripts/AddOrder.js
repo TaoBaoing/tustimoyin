@@ -232,7 +232,7 @@ function SetTotalCountAndMoney() {
     });
 
     if (totalmoney.toString() !== "NaN") {
-        $("#TotalMoney").text("￥" + totalmoney);
+        $("#TotalMoney").text("￥" + totalmoney.toFixed(2));
     }
 
 };
