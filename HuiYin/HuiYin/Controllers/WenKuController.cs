@@ -18,6 +18,16 @@ namespace HuiYin.Controllers
     {
         private AppDbContext db = new AppDbContext();
 
+        public ActionResult ViewHtml(long Id)
+        {
+            var wenku = db.WenKus.FirstOrDefault(x => x.Id == Id);
+            string localPath = Path.Combine(HttpRuntime.AppDomainAppPath, "Upload\\WenKu");
+            var filename = Path.Combine(localPath, wenku.FileName);
+
+            var html = AppUtil.WordToHtml(filename);
+
+            return Content(html);
+        }
 
         public ActionResult DownLoad(long Id)
         {
