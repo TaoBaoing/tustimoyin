@@ -92,7 +92,15 @@ namespace HuiYin.Controllers
                 }
                 else
                 {
-                    return Redirect(returnurl);
+                    if (string.IsNullOrEmpty(returnurl))
+                    {
+                        return RedirectToAction("AddOrder","Order");
+                    }
+                    else
+                    {
+                        return Redirect(returnurl);
+                    }
+                   
                 }
             }
             else

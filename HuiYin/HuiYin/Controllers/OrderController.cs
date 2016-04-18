@@ -28,7 +28,14 @@ namespace HuiYin.Controllers
 
         private AppDbContext db = new AppDbContext();
 
-   
+        public ActionResult DownLoad(string fileName,string filePathName)
+        {
+            var contentType = AppUtil.MimeType(fileName);
+            string localPath = Path.Combine(HttpRuntime.AppDomainAppPath, "Upload");
+            var filename = Path.Combine(localPath, filePathName);
+            return File(filename, contentType, fileName);
+        }
+
         public ActionResult CancleOrder(long Id)
         {
             var order = db.Orders.Find(Id);
