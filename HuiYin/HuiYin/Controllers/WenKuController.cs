@@ -31,11 +31,29 @@ namespace HuiYin.Controllers
 
         public ActionResult DownLoad(long Id)
         {
-            var wenku = db.WenKus.FirstOrDefault(x => x.Id == Id);
-            var contentType = AppUtil.MimeType(wenku.FileName);
-            string localPath = Path.Combine(HttpRuntime.AppDomainAppPath, "Upload\\WenKu");
-            var filename = Path.Combine(localPath, wenku.FileName);
-            return File(filename, contentType, wenku.Name);
+                        var wenku = db.WenKus.FirstOrDefault(x => x.Id == Id);
+                        var contentType = AppUtil.MimeType(wenku.FileName);
+                        string localPath = Path.Combine(HttpRuntime.AppDomainAppPath, "Upload\\WenKu");
+                        var filename = Path.Combine(localPath, wenku.FileName);
+            //            return File(filename, contentType, wenku.Name);
+            var filePathResult=new FilePathResult(filename,contentType);
+            
+            var extension = Path.GetExtension(wenku.FileName);
+            if (extension!=null&& extension.ToLower() != ".pdf")
+            {
+                filePathResult.FileDownloadName = wenku.Name;
+            }
+            
+            return filePathResult;
+//                        return new FileContentResult(null,contentType);
+
+            //            p.Response.ContentType = "Application/pdf";
+            //            string fileName = inFilePath.Substring(inFilePath.LastIndexOf('\\') + 1);
+            //            p.Response.AddHeader("content-disposition", "filename=" + fileName);
+            //            p.Response.WriteFile(inFilePath);
+            //            p.Response.End();
+
+            //            return new FileContentResult(); 
         }
 
         public ActionResult Viewer(string viewFileName)
